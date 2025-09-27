@@ -1,12 +1,12 @@
 const CACHE_NAME = 'memo-app-cache-v1';
 const urlsToCache = [
-  '/',
-  '/index.html',
-  '/style.css',
-  '/app.js',
-  '/manifest.json',
-  '/images/icon-192x192.png',
-  '/images/icon-512x512.png'
+  './',
+  './index.html',
+  './style.css',
+  './app.js',
+  './manifest.json',
+  './images/icon-192x192.png',
+  './images/icon-512x512.png'
 ];
 
 self.addEventListener('install', (event) => {
