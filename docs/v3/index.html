@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Memo App</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="manifest" href="/manifest.json">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.15/codemirror.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.15/theme/material.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css" crossorigin="anonymous">
+</head>
+<body>
+    <div class="container">
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <input type="search" id="search-input" placeholder="検索...">
+                <button id="new-note-btn">+</button>
+            </div>
+            <div id="notes-list" class="notes-list"></div>
+        </aside>
+        <main class="main-content">
+            <header class="main-header">
+                <div class="header-left">
+                    <button id="sidebar-toggle-btn">☰</button>
+                    <button id="undo-btn" title="元に戻す">↶</button>
+                    <button id="redo-btn" title="やり直し">↷</button>
+                    <div class="toggle-switch-container">
+                        <label for="markdown-toggle" class="switch-label">Markdown</label>
+                        <label class="macos-switch">
+                            <input type="checkbox" id="markdown-toggle">
+                            <span class="macos-slider"></span>
+                        </label>
+                    </div>
+                </div>
+                <div class="menu-container">
+                    <button id="menu-btn">...</button>
+                    <div id="menu-dropdown" class="menu-dropdown">
+                        <button id="delete-note-btn">削除</button>
+                        <button id="version-btn">バージョン情報</button>
+                        <div id="dev-menu" class="dev-menu" style="display: none;">
+                            <hr>
+                            <button id="download-data-btn">LocalStorageをダウンロード</button>
+                            <button id="upload-data-btn">LocalStorageをアップロード</button>
+                            <button id="export-to-clipboard-btn">クリップボードにエクスポート</button>
+                            <button id="import-from-clipboard-btn">クリップボードからインポート</button>
+                        </div>
+                    </div>
+                    <input type="file" id="upload-input" accept=".json" style="display: none;">
+                </div>
+            </header>
+            <div class="editor-wrapper">
+                <div id="note-display" class="note-display"></div>
+                <div id="editor-container" style="display: none; flex-grow: 1; flex-direction: column;">
+                    <input type="text" id="note-title-editor" class="note-title-editor" placeholder="タイトル">
+                    <textarea id="note-body-editor" class="note-body-editor" placeholder="本文"></textarea>
+                </div>
+                <div class="tags-input-container" style="display: none;">
+                    <input type="text" id="tags-input" class="tags-input" placeholder="タグをカンマ区切りで入力 (例: work, important, todo)">
+                </div>
+            </div>
+        </main>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/dompurify/dist/purify.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.15/codemirror.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.15/mode/markdown/markdown.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.15/mode/clike/clike.min.js"></script>
+    <script src="app.js"></script>
+    <script>
+      if ('serviceWorker' in navigator) {
+        window.addEventListener('load', () => {
+          navigator.serviceWorker.register('/service-worker.js')
+            .then((registration) => {
+              console.log('ServiceWorker registration successful with scope: ', registration.scope);
+            })
+            .catch((error) => {
+              console.log('ServiceWorker registration failed: ', error);
+            });
+        });
+      }
+    </script>
+</body>
+</html>
